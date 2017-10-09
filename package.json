@@ -6,13 +6,15 @@
   "main": "src/scripts/main/index.js",
   "scripts": {
     "start": "electron .",
-    "package-win": "electron-packager . --overwrite --asar --platform=win32 --arch=64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='EasyStart'"
+    "package-win": "electron-packager . --overwrite --asar --platform=win32 --arch=64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='EasyStart'",
+    "create-installer-win": "node installers/create-window-installer.js"
   },
   "keywords": [],
   "author": "NZapp",
   "license": "ISC",
   "devDependencies": {
     "electron": "^1.7.8",
-    "electron-packager": "^9.1.0"
+    "electron-packager": "^9.1.0",
+    "electron-winstaller": "^2.6.3"
   }
 }
