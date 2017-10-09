@@ -1,4 +1,4 @@
-const { createWindowsInstaller } = require("electron-winstalle");
+const { createWindowsInstaller } = require("electron-winstaller");
 const path = require("path");
 
 getInstallerConfig()
@@ -14,7 +14,7 @@ function getInstallerConfig() {
     const outPath = path.join(rootPath, "release-builds");
 
     return Promise.resolve({
-        appDirectory: path.join(outPath, "app-win32-ia64/"),
+        appDirectory: path.join(outPath, "EasyStart-win32-x64/"),
         authors: "NZapp",
         noMsi: true,
         outputDirectory: path.join(outPath, "windows-installer"),
