@@ -5,7 +5,8 @@
   "description": "EasyStart",
   "main": "src/scripts/main/index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . --overwrite --asar --platform=win32 --arch=64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='EasyStart'"
   },
   "keywords": [],
   "author": "NZapp",
