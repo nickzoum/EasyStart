@@ -9,5 +9,9 @@
   },
   "keywords": [],
   "author": "NZapp",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.7.8",
+    "electron-packager": "^9.1.0"
+  }
 }
