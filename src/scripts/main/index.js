@@ -44,7 +44,7 @@
             height: 160,
             width: 250,
         });
-        window.loadURL(`file://${__dirname}/../pages/index.html`);
+        window.loadURL(`file://${__dirname}/../../pages/index.html`);
         display = screen;
         Settings.saveSettings(getConfigPath());
     }
@@ -85,7 +85,7 @@
                 width: 300,
             });
             aboutWindow.setMenu(null);
-            aboutWindow.loadURL(`file://${__dirname}/../pages/about.html`);
+            aboutWindow.loadURL(`file://${__dirname}/../../pages/about.html`);
         }
     }
 

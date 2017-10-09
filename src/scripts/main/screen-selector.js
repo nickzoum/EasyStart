@@ -24,7 +24,7 @@
                 height: 400,
                 width: 800
             });
-            window.loadURL(`file://${__dirname}/../pages/screen-selector.html`);
+            window.loadURL(`file://${__dirname}/../../pages/screen-selector.html`);
             ipcMain.on("on-screen-selected", function (evt, id) {
                 index = getDisplayIndex(id, displays);
                 if (index !== -1) {
