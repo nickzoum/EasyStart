@@ -1,0 +1,13 @@
+{
+  "name": "easystart",
+  "productName": "EasyStart",
+  "version": "1.2.0",
+  "description": "EasyStart",
+  "main": "src/scripts/main/index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "NZapp",
+  "license": "ISC"
+}

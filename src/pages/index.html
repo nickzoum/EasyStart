@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="../styles/index.css" rel="stylesheet" type="text/css" />
+    <link href="../styles/scrollbar.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="menu">
+            <ul id="controls">
+                <li class="glue" action="settings"></li>
+                <li class="action min" action="minimize"></li>
+                <li class="action gear" action="settings"></li>
+                <li class="action x red-hover" action="close"></li>
+            </ul>
+        </div>
+        <div id="container"></div>
+    </div>
+    <script>
+        require("../scripts/renderer/index.js");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+#container {
+    display: flex;
+}
+
+button.display {
+    border: 0px none transparent;
+    outline: none !important;
+    background: transparent;
+    transition: all 0.2s;
+    margin: 0 0 0 auto;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    height: 256px;
+    width: 256px;
+    opacity: 0.8;
+    float: left;
+    padding: 0;
+}
+
+button.display:hover {
+    transform: scale(1.05, 1.05);
+    opacity: 1;
+}
+
+button.display:last-child {
+    margin-right: auto;
+}
+
+button.display::before {
+    background-image: url("../images/display.png");
+    position: absolute;
+    display: block;
+    height: 256px;
+    width: 256px;
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+button.touch::after {
+    background-image: url("../images/touch.png");
+    position: absolute;
+    display: block;
+    height: 256px;
+    width: 256px;
+    content: "";
+    left: 0;
+    top: 0;
+}
+
+button.display>span {
+    font-family: "Eras ITC", Helvetica, "Droid Sans", Tahoma, Geneva, sans-serif;
+    color: rgb(70, 73, 75);
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    font-size: 15px;
+}
+
+button.display>span::after {
+    content: " px";
+}
+
+button.display>.height {
+    right: 15px;
+    top: 93px;
+}
+
+button.display>.width {
+    bottom: 90px;
+    right: 0px;
+    left: 0px;
+}

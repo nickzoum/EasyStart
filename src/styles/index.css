@@ -1,0 +1,90 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#wrapper {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+#menu {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgb(40, 43, 38);
+    -webkit-app-region: drag;
+    transition: 0.2s all;
+    height: 25px;
+    width: 100%;
+}
+
+:hover #menu, #menu.drag {
+    cursor: move;
+    opacity: 1;
+}
+
+#container {
+    background: rgb(40, 43, 38);
+    height: calc(100% - 30px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+#controls {
+    list-style: none;
+    display: flex;
+    width: 100%;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+#controls>li {
+    line-height: 24px;
+    font-size: 20px;
+    float: left;
+}
+
+.action {
+    color: rgba(255, 255, 255, 0.8);
+    -webkit-app-region: no-drag;
+    background: transparent;
+    transition: all 0.4s;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.action:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: rgb(40, 43, 38);
+    cursor: pointer;
+}
+
+.red-hover:hover {
+    background: rgba(232, 17, 35, 1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.gear::before {
+    content: "\2699";
+}
+
+.min::before {
+    content: "\01F5D5";
+}
+
+.x::before {
+    content: "\2716";
+}
+
+.glue {
+    pointer-events: none;
+    margin: auto;
+}
+
+.item>img {
+    height: 40px;
+    width: 40px;
+}
