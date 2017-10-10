@@ -1,33 +1,33 @@
 (function () {
     const { app, BrowserWindow, ipcMain } = require("electron");
     const FileIO = require("./file-io.js");
-    /** @type {Electron.Display} */
-    var displayId;
-    /** @type {Array<EasyStart.Category>} */
-    var categories;
+    /** @type {"C:/Users/Nick/Documents/Electron/EasyStart/src/scripts/main/screen-selector"} */
+    var ScreenSelector = undefined;
+    /** @type {EasyStart.Settings} */
+    var settings = {
+        categories: [],
+        displayId: -1
+    };
 
 
     /**
      * Asynchronously loads the settings
      * @param {string} configPath
-     * @returns {Promise<Array<EasyStart.Category>>}
+     * @returns {Promise<Electron.category>}
      */
     function loadSettings(configPath) {
         return new Promise(function (resolve, reject) {
             try {
                 FileIO.readAsync(configPath).then(function (data) {
                     try {
-                        var json = JSON.parse(data);
-                        displayId = json["displayId"];
-                        categories = json["categories"];
-                        resolve(categories);
+                        settings = JSON.parse(data);
+                        resolve(settings.categories);
                     } catch (err) { reject(err); }
                 }).catch(function (err) {
                     var error = err ? err["errno"] || err : "Unspecified Error";
                     if (error === -4058) {
-                        resetConfig();
                         saveSettings(configPath).then(function () {
-                            resolve(categories);
+                            resolve(settings.categories);
                         }).catch(reject);
                     } else {
                         reject();
@@ -44,8 +44,8 @@
     function getScreen() {
         return new Promise(function (resolve, reject) {
             try {
-                require("./screen-selector.js").onScreenSelected(displayId).then(function (result) {
-                    displayId = result.id;
+                getScreenSelector().onScreenSelected(settings.displayId).then(function (result) {
+                    settings.displayId = result.id;
                     resolve(result);
                 }).catch(reject);
             }
@@ -54,12 +54,12 @@
     }
 
     /**
-     * 
-     * @returns {void} 
+     * Asynchronously gets a different screen
+     * @returns {Promise<Electron.Display>}
      */
-    function resetConfig() {
-        categories = [];
-        displayId = -1;
+    function getNewScreen() {
+        settings.displayId = -1;
+        return getScreen();
     }
 
     /**
@@ -69,11 +69,7 @@
      */
     function saveSettings(configPath) {
         return new Promise(function (resolve, reject) {
-            var json = {
-                categories: categories || [],
-                displayId: displayId || -1
-            };
-            FileIO.writeAsync(configPath, JSON.stringify(json))
+            FileIO.writeAsync(configPath, JSON.stringify(settings))
                 .then(resolve).catch(reject);
         });
     }
@@ -85,11 +81,11 @@
      */
     function addCategory(category) {
         category.id = 0;
-        for (var item of categories) {
+        for (var item of settings.categories) {
             if (item.id > category.id) category.id = item.id;
         }
         category.id++;
-        categories.push(category);
+        settings.categories.push(category);
     }
 
     /**
@@ -100,7 +96,7 @@
      */
     function addFolder(folder, categoryId) {
         folder.id = 0;
-        for (var category of categories) {
+        for (var category of settings.categories) {
             for (var item of category.folderList) {
                 if (item.id > folder.id) folder.id = item.id;
             }
@@ -116,11 +112,11 @@
      * @param {number} [folderId=]
      */
     function addItem(item, categoryId, folderId) {
-        var categoryIndex = categories.findIndex(function (category) {
+        var categoryIndex = settings.categories.findIndex(function (category) {
             return category.id === categoryId;
         });
         if (categoryIndex !== -1) {
-            var category = categories[categoryIndex];
+            var category = settings.categories[categoryIndex];
             var folderIndex = category.folderList.findIndex(function (folder) {
                 return folder.id === folderId;
             });
@@ -129,17 +125,25 @@
     }
 
     /**
+     * Gets the screen selector module
+     * @returns {"./screen-selector.js"}
+     */
+    function getScreenSelector() {
+        return ScreenSelector = ScreenSelector || require("./screen-selector.js");
+    }
+
+    /**
      * Gets the category list
      * @param {Event} evt
      * @returns {Array<EasyStart.Category>}
      */
     function getCategories(evt) {
-        return evt.returnValue = categories;
+        return evt.returnValue = settings.categories;
     }
 
     ipcMain.on("get-categories", getCategories);
 
-
+    exports.getNewScreen = getNewScreen;
     exports.loadSettings = loadSettings;
     exports.saveSettings = saveSettings;
     exports.addCategory = addCategory;

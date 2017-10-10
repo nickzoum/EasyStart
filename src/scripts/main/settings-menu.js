@@ -17,12 +17,28 @@
         },
         { type: "separator" },
         {
+            label: "Settings",
+            submenu: [
+                {
+                    label: "Change Display",
+                    click: changeDisplay
+                }, {
+                    label: "Save Position",
+
+                }
+            ]
+        },
+        {
             label: "Advanced",
             submenu: [
                 {
                     label: "Toggle Developer Toolds",
                     accelerator: "Ctrl+Shift+I",
                     click: toggleDevTools
+                },
+                {
+                    label: "Import StyleSheet",
+                    click: importStyle
                 }
             ]
         },
@@ -38,15 +54,15 @@
     ];
 
     function newCategory() {
-
+        Main.newCategory();
     }
 
     function newFolder() {
-
+        Main.newFolder();
     }
 
     function newItem() {
-
+        Main.newItem();
     }
 
     function close() {
@@ -59,6 +75,18 @@
 
     function toggleDevTools() {
         Main.toggleDevTools();
+    }
+
+    function importStyle() {
+        Main.importStyle();
+    }
+
+    function changeDisplay() {
+        Main.changeDisplay();
+    }
+
+    function savePosition() {
+        Main.savePosition();
     }
 
     function getMenu() {

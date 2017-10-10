@@ -10,9 +10,7 @@
         var actions = document.querySelectorAll(".action");
         for (var action of actions) action.addEventListener("click", onActionClicked);
         var container = document.querySelector("#container");
-        for (var category of categories) {
-            container.appendChild(createCategoryDom(category));
-        }
+        for (var category of categories) container.appendChild(createCategoryDom(category));
     }
 
     /**
@@ -25,15 +23,13 @@
         var dom = document.createElement("div");
         var list = document.createElement("ul");
         name.textContent = category.name;
+        name.className = "categpry-name";
+        list.className = "category-list";
         dom.className = "category";
         dom.appendChild(name);
         dom.appendChild(list);
-        for (var folder of category.folderList) {
-            list.appendChild(createFolderDom(folder));
-        }
-        for (var item of category.itemList) {
-            list.appendChild(createItemDom(item));
-        }
+        for (var folder of category.folderList) list.appendChild(createFolderDom(folder));
+        for (var item of category.itemList) list.appendChild(createItemDom(item));
         return dom;
     }
 
@@ -46,12 +42,13 @@
         var name = document.createElement("span");
         var dom = document.createElement("div");
         var list = document.createElement("ul");
+        name.textContent = folder.name;
+        name.className = "folder-name";
+        list.className = "folder-list";
         dom.className = "folder";
         dom.appendChild(list);
         dom.appendChild(name);
-        for (var item of folder.itemList) {
-            list.appendChild(createItemDom(item));
-        }
+        for (var item of folder.itemList) list.appendChild(createItemDom(item));
         return dom;
     }
 
@@ -61,13 +58,14 @@
      * @returns {HTMLElement}
      */
     function createItemDom(item) {
-        var name = document.createElement("span");
         var dom = document.createElement("button");
+        var name = document.createElement("span");
         var image = document.createElement("img");
-        dom.setAttribute("tooltip", item.fileSrc);
         dom.addEventListener("click", onItemClicked);
-        image.src = item.imageSrc;
+        dom.setAttribute("tooltip", item.fileSrc);
+        image.setAttribute("src", item.imageSrc);
         name.textContent = item.name;
+        image.className = "item-image";
         name.className = "hover";
         dom.className = "item";
         dom.appendChild(image);
@@ -111,6 +109,5 @@
     function callAction(actionName) {
         ipcRenderer.send("control-action", actionName);
     }
-
 
 })();

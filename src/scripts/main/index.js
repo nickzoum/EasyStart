@@ -1,7 +1,8 @@
 (function () {
-    const { app, BrowserWindow, ipcMain, Menu } = require("electron");
+    const { app, BrowserWindow, ipcMain, Menu, shell } = require("electron");
     const Settings = require("./settings.js");
     const Actions = require("./actions.js");
+    const path = require("path");
 
     /** @type {Electron.Display} */
     var display;
@@ -124,27 +125,77 @@
     }
 
     function getImagePath() {
-        return `${getRoamingPath()}\\images`;
+        return path.join(getRoamingPath(), "images");
     }
 
     function getConfigPath() {
-        return `${getRoamingPath()}\\${app.getName()}.config`;
+        return path.join(getRoamingPath(), `${app.getName()}.config`);
     }
 
-    ipcMain.on("get-app", function (event) {
+    /**
+     * Gets the app properties
+     * @param {Event} event 
+     * @returns {Electron.App}
+     */
+    function getApp(event) {
         var appJSON = {
             version: app.getVersion(),
             name: app.getName()
         };
-        event.returnValue = appJSON;
-    });
+        return event.returnValue = appJSON;
+    }
+
+    /**
+     * 
+     * @param {Event} event 
+     * @param {string} url 
+     */
+    function callItem(event, url) {
+        if (url.startsWith("file://")) shell.openItem(url);
+        else shell.openExternal(url);
+    }
+
+    function changeDisplay() {
+
+    }
+
+    function savePosition() {
+
+    }
+
+    function importStyle() {
+
+    }
+
+    function newCategory() {
+
+    }
+
+    function newFolder() {
+
+    }
+
+    function newItem() {
+
+    }
+
+
+    ipcMain.on("call-item", callItem);
+    ipcMain.on("get-app", getApp);
+
 
     exports.toggleDevTools = toggleDevTools;
+    exports.changeDisplay = changeDisplay;
     exports.getConfigPath = getConfigPath;
+    exports.savePosition = savePosition;
     exports.getImagePath = getImagePath;
+    exports.importStyle = importStyle;
     exports.closeWindow = closeWindow;
+    exports.newCategory = newCategory;
+    exports.newFolder = newFolder;
     exports.showAbout = showAbout;
     exports.minimize = minimize;
     exports.showMenu = showMenu;
+    exports.newItem = newItem;
 
 })();
