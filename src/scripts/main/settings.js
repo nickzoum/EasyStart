@@ -1,7 +1,7 @@
 (function () {
     const { app, BrowserWindow, ipcMain } = require("electron");
     const FileIO = require("./file-io.js");
-    /** @type {"C:/Users/Nick/Documents/Electron/EasyStart/src/scripts/main/screen-selector"} */
+    /** @type {module "./screen-selector"} */
     var ScreenSelector = undefined;
     /** @type {EasyStart.Settings} */
     var settings = {
@@ -126,7 +126,7 @@
 
     /**
      * Gets the screen selector module
-     * @returns {"./screen-selector.js"}
+     * @returns {module "./screen-selector"}
      */
     function getScreenSelector() {
         return ScreenSelector = ScreenSelector || require("./screen-selector.js");

@@ -1,8 +1,18 @@
 (function () {
-    const { app, BrowserWindow, ipcMain, Menu, shell } = require("electron");
+    const { app, BrowserWindow, ipcMain, Menu, shell, dialog } = require("electron");
     const Settings = require("./settings.js");
     const Actions = require("./actions.js");
     const path = require("path");
+    /** @type {Map<string, Electron.FileFilter>} */
+    const filterList = {
+        "css": {
+            name: "Cascade Style Sheets Files",
+            extensions: ["css"]
+        },
+        get: function (key) {
+            return this[key];
+        }
+    };
 
     /** @type {Electron.Display} */
     var display;
@@ -156,15 +166,22 @@
     }
 
     function changeDisplay() {
-
+        Settings.getNewScreen().then(function (display) {
+            var area = display.workArea;
+            window.setPosition(area.x + area.width - 270, area.y + 20, true);
+        }).catch(onError);
     }
 
     function savePosition() {
-
+        Settings.saveSettings();
     }
 
     function importStyle() {
-
+        dialog.showOpenDialog(window, getOpenDialogOptions("Import Style", app.getPath("desktop"), ["css"]), function (fileNames) {
+            if (fileNames instanceof Array) {
+                console.log()
+            }
+        });
     }
 
     function newCategory() {
@@ -177,6 +194,33 @@
 
     function newItem() {
 
+    }
+
+    /**
+     * 
+     * @param {string} title
+     * @param {string} path
+     * @param {Array<string>} filters
+     * @returns {Electron.OpenDialogOptions}
+     */
+    function getOpenDialogOptions(title, path, filters) {
+        var json = {
+            properties: [
+                "showHiddenFiles",
+                "multiSelections",
+                "openFile"
+            ]
+        };
+        if (typeof title === "string") json["title"] = title;
+        if (typeof path === "string") json["defaultPath"] = path;
+        if (filters instanceof Array) {
+            json.filters = [];
+            for (var filterName of filters) {
+                var filter = filterList.get(filterName);
+                if (filter) json.filters.push(filter);
+            }
+        }
+        return json;
     }
 
 
