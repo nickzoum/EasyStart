@@ -28,7 +28,7 @@ button.display:last-child {
 }
 
 button.display::before {
-    background-image: url("../images/display.png");
+    background-image: url("../../assets/images/display.png");
     position: absolute;
     display: block;
     height: 256px;

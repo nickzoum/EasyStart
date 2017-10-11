@@ -1,6 +1,6 @@
 (function () {
     const { app, BrowserWindow, ipcMain } = require("electron");
-    const FileIO = require("./file-io.js");
+    const FileSystem = require("./file-system.js");
     /** @type {module "./screen-selector"} */
     var ScreenSelector = undefined;
     /** @type {EasyStart.Settings} */
@@ -16,9 +16,10 @@
      * @returns {Promise<Electron.category>}
      */
     function loadSettings(configPath) {
+        console.log(configPath);
         return new Promise(function (resolve, reject) {
             try {
-                FileIO.readAsync(configPath).then(function (data) {
+                FileSystem.readAsync(configPath).then(function (data) {
                     try {
                         settings = JSON.parse(data);
                         resolve(settings.categories);
@@ -69,7 +70,7 @@
      */
     function saveSettings(configPath) {
         return new Promise(function (resolve, reject) {
-            FileIO.writeAsync(configPath, JSON.stringify(settings))
+            FileSystem.writeAsync(configPath, JSON.stringify(settings))
                 .then(resolve).catch(reject);
         });
     }

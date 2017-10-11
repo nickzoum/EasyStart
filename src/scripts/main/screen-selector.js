@@ -9,14 +9,14 @@
      */
     function onScreenSelected(displayId) {
         return new Promise(function (resolve, reject) {
-            if (display) return resolve(display);
+            if (display && displayId !== -1) return resolve(display);
             var displays = screen.getAllDisplays();
             var index = getDisplayIndex(displayId, displays);
             if (index !== -1) return resolve(display = displays[index]);
             if (displays.length === 1) return resolve(display = displays[0]);
             var window = new BrowserWindow({
                 title: "Screen Selector",
-                //skipTaskbar: true,
+                skipTaskbar: true,
                 transparent: true,
                 resizable: true,
                 center: true,
@@ -28,12 +28,8 @@
             ipcMain.on("on-screen-selected", function (evt, id) {
                 index = getDisplayIndex(id, displays);
                 if (index !== -1) {
-                    window.blur();
-                    window.setSkipTaskbar(true);
                     resolve(display = displays[index]);
-                    setTimeout(function () {
-                        window.close(); window = null;
-                    }, 2500);
+                    window.close();
                 }
             });
             ipcMain.on("on-display-request", function (evt) {

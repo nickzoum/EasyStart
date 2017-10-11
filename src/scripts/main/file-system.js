@@ -49,6 +49,19 @@
         });
     }
 
+    function copyFileSync(source, destination) {
+        return fs.copyFileSync(source, destination);
+    }
+
+    function copyFileAsync(source, destination) {
+        return new Promise(function (resolve, reject) {
+            fs.copyFile(source, destination, function (err) {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
     exports.writeAsync = writeAsync;
     exports.readAsync = readAsync;
     exports.writeSync = readSync;

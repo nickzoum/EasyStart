@@ -103,6 +103,21 @@
 
     /**
      * 
+     * @param {Event} evt 
+     * @param {string} styleUrl
+     * @returns {void} 
+     */
+    function loadStyle(evt, styleUrl) {
+        var link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = styleUrl;
+        document.head.appendChild(link);
+    }
+
+    ipcRenderer.on("load-style", loadStyle);
+
+    /**
+     * 
      * @param {string} actionName 
      * @returns {void}
      */

@@ -1,5 +1,6 @@
 (function () {
-    const { app, BrowserWindow, ipcMain, Menu, shell, dialog } = require("electron");
+    const { app, BrowserWindow, ipcMain, Menu, shell, dialog, Tray } = require("electron");
+    const TrayMenu = require("./settings-menu.js");// require("./tray-menu.js");
     const Settings = require("./settings.js");
     const Actions = require("./actions.js");
     const path = require("path");
@@ -18,6 +19,8 @@
     var display;
     /** @type {Electron.BrowserWindow} */
     var window;
+    /** @type {Electron.Tray} */
+    var tray;
 
     app.on("ready", onAppReady);
 
@@ -27,6 +30,9 @@
      */
     function onAppReady() {
         Settings.loadSettings(getConfigPath()).then(onSettingsLoaded).catch(onError);
+        tray = new Tray(path.join("assets", "images", "display.png"));
+        tray.setContextMenu(TrayMenu());
+        tray.setToolTip(app.getName());
     }
 
     /**
@@ -66,7 +72,7 @@
      * @returns {void}
      */
     function onError(err) {
-        console.warn(err);
+        dialog.showErrorBox("Error", err);
     }
 
     ipcMain.on("control-action", onControlAction);
@@ -179,7 +185,9 @@
     function importStyle() {
         dialog.showOpenDialog(window, getOpenDialogOptions("Import Style", app.getPath("desktop"), ["css"]), function (fileNames) {
             if (fileNames instanceof Array) {
-                console.log()
+                for (var fileName of fileNames) {
+                    window.webContents.send("load-style", fileName);
+                }
             }
         });
     }
