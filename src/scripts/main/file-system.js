@@ -1,4 +1,5 @@
 (function () {
+    const path = require("path");
     const fs = require("fs");
 
     /**
@@ -49,19 +50,63 @@
         });
     }
 
-    function copyFileSync(source, destination) {
-        return fs.copyFileSync(source, destination);
+    /**
+     * Synchronously copies a file
+     * @param {string} source 
+     * @param {string} destination 
+     * @param {string} [name=]
+     * @returns {string} 
+     */
+    function copyFileSync(source, destination, name) {
+        if (typeof name === "string") destination = path.join(destination, name);
+        fs.createReadStream(source).pipe(fs.createWriteStream(destination));
+        return destination;
     }
 
-    function copyFileAsync(source, destination) {
+    /**
+     * Asynchronously copies a file
+     * @param {string} source 
+     * @param {string} destination 
+     * @param {string} [name=]
+     * @returns {Promise<string>} 
+     */
+    function copyFileAsync(source, destination, name) {
         return new Promise(function (resolve, reject) {
-            fs.copyFile(source, destination, function (err) {
-                if (err) reject(err);
-                else resolve();
+            try { resolve(copyFileSync(source, destination, name)); }
+            catch (err) { reject(err); }
+        });
+    }
+
+    /**
+     * Synchronously creates a directory if it doesn't exist
+     * @param {string} directory
+     * @returns {void} 
+     */
+    function createDirectorySync(directory) {
+        if (!fs.existsSync(directory)) fs.mkdirSync(directory);
+    }
+
+    /**
+     * Asynchronously creates a directory if it doesn't exist
+     * @param {string} directory
+     * @returns {void} 
+     */
+    function createDirectoryAsync(directory) {
+        return new Promise(function (resolve, reject) {
+            fs.exists(directory, function (exists) {
+                if (exists) resolve();
+                else fs.mkdir(function (err) {
+                    if (err) reject(err);
+                    else resolve();
+                });
             });
         });
     }
 
+    exports.createDirectoryAsync = createDirectoryAsync;
+    exports.createDirectorySync = createDirectorySync;
+    exports.copyFileAsync = copyFileAsync;
+    exports.copyFileSync = copyFileAsync;
     exports.writeAsync = writeAsync;
     exports.readAsync = readAsync;
     exports.writeSync = readSync;

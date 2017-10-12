@@ -11,6 +11,7 @@
         for (var action of actions) action.addEventListener("click", onActionClicked);
         var container = document.querySelector("#container");
         for (var category of categories) container.appendChild(createCategoryDom(category));
+        ipcRenderer.send("window-loaded");
     }
 
     /**

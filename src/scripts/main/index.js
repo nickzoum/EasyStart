@@ -29,10 +29,11 @@
      * @returns {void}
      */
     function onAppReady() {
-        Settings.loadSettings(getConfigPath()).then(onSettingsLoaded).catch(onError);
         tray = new Tray(path.join("assets", "images", "display.png"));
         tray.setContextMenu(TrayMenu());
         tray.setToolTip(app.getName());
+        Settings.checkDirectories([getRoamingPath(), getImagePath(), getStylePath()]);
+        Settings.loadSettings(getConfigPath()).then(onSettingsLoaded).catch(onError);
     }
 
     /**
@@ -144,6 +145,10 @@
         return path.join(getRoamingPath(), "images");
     }
 
+    function getStylePath() {
+        return path.join(getRoamingPath(), "styles");
+    }
+
     function getConfigPath() {
         return path.join(getRoamingPath(), `${app.getName()}.config`);
     }
@@ -186,6 +191,7 @@
         dialog.showOpenDialog(window, getOpenDialogOptions("Import Style", app.getPath("desktop"), ["css"]), function (fileNames) {
             if (fileNames instanceof Array) {
                 for (var fileName of fileNames) {
+                    Settings.addStyle(fileName, path.join(getStylePath())).catch(onError);
                     window.webContents.send("load-style", fileName);
                 }
             }
@@ -202,6 +208,14 @@
 
     function newItem() {
 
+    }
+
+    /**
+     * 
+     * @param {Event} evt 
+     */
+    function onWindowLoaded(evt) {
+        for (var style of Settings.getStyles()) window.webContents.send("load-style", style);
     }
 
     /**
@@ -232,6 +246,7 @@
     }
 
 
+    ipcMain.on("window-loaded", onWindowLoaded);
     ipcMain.on("call-item", callItem);
     ipcMain.on("get-app", getApp);
 

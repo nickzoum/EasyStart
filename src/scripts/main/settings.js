@@ -6,9 +6,20 @@
     /** @type {EasyStart.Settings} */
     var settings = {
         categories: [],
-        displayId: -1
+        displayId: -1,
+        styles: []
     };
 
+    /**
+     * Synchronously checks if all directories are set up
+     * @param {Array<string>} directoryList
+     * @returns {void} 
+     */
+    function checkDirectories(directoryList) {
+        for (var directory of directoryList) {
+            FileSystem.createDirectorySync(directory);
+        }
+    }
 
     /**
      * Asynchronously loads the settings
@@ -16,7 +27,6 @@
      * @returns {Promise<Electron.category>}
      */
     function loadSettings(configPath) {
-        console.log(configPath);
         return new Promise(function (resolve, reject) {
             try {
                 FileSystem.readAsync(configPath).then(function (data) {
@@ -142,13 +152,42 @@
         return evt.returnValue = settings.categories;
     }
 
+    /**
+     * Adds a style file and saves a copy of it
+     * @param {string} filePath
+     * @param {string} destDir
+     * @returns {Promise<void>} 
+     */
+    function addStyle(filePath, destDir) {
+        return new Promise(function (resolve, reject) {
+            var name = filePath.substring(filePath.search(/[\\/][^\\/]{1,}$/));
+            FileSystem.copyFileAsync(filePath, destDir, name).then(function (createdFile) {
+                settings.styles.push({
+                    fileSrc: createdFile,
+                    active: true
+                });
+                resolve();
+            }).catch(reject);
+        });
+    }
+
+    /**
+     * @returns {Array<string>}
+     */
+    function getStyles() {
+        return settings.styles.filter(function (style) { return style.active; }).map(function (style) { return style.fileSrc; });
+    }
+
     ipcMain.on("get-categories", getCategories);
 
+    exports.checkDirectories = checkDirectories;
     exports.getNewScreen = getNewScreen;
     exports.loadSettings = loadSettings;
     exports.saveSettings = saveSettings;
     exports.addCategory = addCategory;
     exports.getScreen = getScreen;
     exports.addFolder = addFolder;
+    exports.getStyles = getStyles;
+    exports.addStyle = addStyle;
     exports.addItem = addItem;
 })();
