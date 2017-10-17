@@ -62,6 +62,7 @@
         var dom = document.createElement("button");
         var name = document.createElement("span");
         var image = document.createElement("img");
+        dom.addEventListener("contextmenu", onContextMenu);
         dom.addEventListener("click", onItemClicked);
         dom.setAttribute("tooltip", item.fileSrc);
         image.setAttribute("src", item.imageSrc);
@@ -72,6 +73,10 @@
         dom.appendChild(image);
         dom.appendChild(name);
         return dom;
+    }
+
+    function onContextMenu(evt) {
+        openItemMenu(evt.srcElement.getAttribute("tooltip"));
     }
 
     /**
@@ -100,6 +105,10 @@
      */
     function callItem(url) {
         ipcRenderer.send("call-item", url);
+    }
+
+    function openItemMenu(url) {
+        ipcRenderer.send("showItemMenu", url);
     }
 
     /**

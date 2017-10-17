@@ -1,9 +1,13 @@
 (function () {
     const { app, BrowserWindow, ipcMain, Menu, shell, dialog, Tray } = require("electron");
     const TrayMenu = require("./settings-menu.js");// require("./tray-menu.js");
+    const ItemMenu = require("./item-menu.js");
     const Settings = require("./settings.js");
     const Actions = require("./actions.js");
+    const About = require("./About.js");
     const path = require("path");
+
+
     /** @type {Map<string, Electron.FileFilter>} */
     const filterList = {
         "css": {
@@ -91,19 +95,7 @@
 
     function showAbout() {
         if (window instanceof BrowserWindow) {
-            var aboutWindow = new BrowserWindow({
-                title: `About ${app.getName()}`,
-                minimizable: false,
-                skipTaskbar: true,
-                resizable: false,
-                parent: window,
-                center: true,
-                modal: true,
-                height: 160,
-                width: 300,
-            });
-            aboutWindow.setMenu(null);
-            aboutWindow.loadURL(`file://${__dirname}/../../pages/about.html`);
+            About.showAbout(window);
         }
     }
 
@@ -245,12 +237,27 @@
         return json;
     }
 
+    /**
+     * Shows an item in explorer
+     * @param {string} item
+     * @returns {void} 
+     */
+    function showItemInFolder(item) {
+        shell.showItemInFolder(item);
+    }
+
+
+    function showItemMenu(event, url) {
+        showMenu(ItemMenu(url));
+    }
 
     ipcMain.on("window-loaded", onWindowLoaded);
+    ipcMain.on("showItemMenu", showItemMenu);
     ipcMain.on("call-item", callItem);
     ipcMain.on("get-app", getApp);
 
 
+    exports.showItemInFolder = showItemInFolder;
     exports.toggleDevTools = toggleDevTools;
     exports.changeDisplay = changeDisplay;
     exports.getConfigPath = getConfigPath;

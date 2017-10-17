@@ -32,6 +32,8 @@
                 FileSystem.readAsync(configPath).then(function (data) {
                     try {
                         settings = JSON.parse(data);
+                        settings.categories = settings.categories || [];
+                        settings.styles = settings.categories || [];
                         resolve(settings.categories);
                     } catch (err) { reject(err); }
                 }).catch(function (err) {
