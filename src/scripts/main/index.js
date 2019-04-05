@@ -1,10 +1,12 @@
 (function () {
     const { app, BrowserWindow, ipcMain, Menu, shell, dialog, Tray } = require("electron");
     const TrayMenu = require("./settings-menu.js");// require("./tray-menu.js");
+    const FileSystem = require("./file-system.js");
     const ItemMenu = require("./item-menu.js");
     const Settings = require("./settings.js");
     const Actions = require("./actions.js");
     const About = require("./About.js");
+    const Item = require("./item.js");
     const path = require("path");
 
 
@@ -160,12 +162,20 @@
 
     /**
      * 
-     * @param {Event} event 
      * @param {string} url 
      */
-    function callItem(event, url) {
+    function callItem(url) {
         if (url.startsWith("file://")) shell.openItem(url);
         else shell.openExternal(url);
+    }
+
+    /**
+     * 
+     * @param {Electron.Event} event 
+     * @param {string} url 
+     */
+    function onCallItem(event, url) {
+        callItem(url);
     }
 
     function changeDisplay() {
@@ -198,8 +208,17 @@
 
     }
 
-    function newItem() {
+    function editItem() {
 
+    }
+
+    function newItem() {
+        Item.showItemPage(window).then(function (item) {
+            console.log(item);
+        }).catch(function (err) {
+            console.log("Error");
+            console.log(err);
+        })
     }
 
     /**
@@ -239,11 +258,14 @@
 
     /**
      * Shows an item in explorer
-     * @param {string} item
+     * @param {string} path
      * @returns {void} 
      */
-    function showItemInFolder(item) {
-        shell.showItemInFolder(item);
+    function showItemInFolder(path) {
+        FileSystem.fileExistsAsync(path).then(function (exists) {
+            if (exists) shell.showItemInFolder(item);
+            else onError("File couldn't be found");
+        });
     }
 
 
@@ -253,7 +275,7 @@
 
     ipcMain.on("window-loaded", onWindowLoaded);
     ipcMain.on("showItemMenu", showItemMenu);
-    ipcMain.on("call-item", callItem);
+    ipcMain.on("call-item", onCallItem);
     ipcMain.on("get-app", getApp);
 
 
@@ -268,8 +290,10 @@
     exports.newCategory = newCategory;
     exports.newFolder = newFolder;
     exports.showAbout = showAbout;
+    exports.callItem = callItem;
     exports.minimize = minimize;
     exports.showMenu = showMenu;
+    exports.editItem = editItem;
     exports.newItem = newItem;
 
 })();

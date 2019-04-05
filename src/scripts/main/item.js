@@ -6,10 +6,11 @@
 
     /**
      * Creates an item window for edit/create
+     * @param {Electron.BrowserWindow} mainWindow
      * @param {EasyStart.Item} [item=]
      * @returns {Promise<EasyStart.Item>}
      */
-    function showItemPage(item) {
+    function showItemPage(mainWindow, item) {
         return new Promise(function (resolve, reject) {
             if (occupied) reject("Only edit one item a time");
             else occupied = true;
@@ -26,12 +27,14 @@
             });
             itemWindow.setMenu(null);
             itemWindow.loadURL(`file://${__dirname}/../../pages/item-view.html`);
-            itemWindow.webContents.on("item-window-loaded", function (evt) {
-
+            itemWindow.webContents.on("item-window-loaded", function (evt, item) {
+                console.log(evt);
+                console.log(item);
             });
+            itemWindow.webContents.openDevTools();
         });
     }
 
-    ipcMain.on("item-window-loaded")
+    exports.showItemPage = showItemPage;
 
 })();

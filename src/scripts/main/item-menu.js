@@ -18,7 +18,7 @@
                 click: remove
             }
         ];
-    
+
         /**
          * 
          * @param {Electron.MenuItem} menuItem 
@@ -27,17 +27,17 @@
         function showItemInFolder() {
             Main.showItemInFolder(url);
         }
-    
+
         function edit() {
-    
+
         }
-    
+
         function remove() {
-    
+
         }
-    
+
         function open() {
-    
+            Main.callItem(url);
         }
         return Menu.buildFromTemplate(template);
     }

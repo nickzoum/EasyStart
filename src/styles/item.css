@@ -1,0 +1,62 @@
+#form>ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.input {
+    position: relative;
+    padding: 2px 5px;
+    display: block;
+}
+
+input[type="text"] {
+    border: 1px solid lightblue;
+    width: calc(100% - 50px);
+    position: relative;
+    font-size: 13.5px;
+    padding: 4px 4px;
+    height: 15px;
+    margin: 0;
+    top: 10px;
+}
+
+button.select {
+    border: 0px solid transparent;
+    background: transparent;
+    border-radius: 4px;
+    position: absolute;
+    margin-left: 10px;
+    overflow: hidden;
+    outline: none;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+button.select:empty {
+    background: lightgray;
+}
+
+button.select:empty::before {
+    position: absolute;
+    text-align: center;
+    line-height: 20px;
+    font-size: 20px;
+    content: "...";
+}
+
+img.image-preview {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+input.hidden-input {
+    pointer-events: none;
+    position: absolute;
+    opacity: 0;
+}

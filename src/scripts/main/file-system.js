@@ -103,8 +103,31 @@
         });
     }
 
+    /**
+     * Asynchronously checks if a file exists
+     * @param {string} filePath
+     * @returns {Promise<boolean>}
+     */
+    function fileExistsAsync(filePath) {
+        return new Promise(function (resolve, reject) {
+            try { fs.exists(filePath, resolve); }
+            catch (err) { reject(err); }
+        });
+    }
+
+    /**
+     * Synchronously checks if a file exists
+     * @param {string} filePath
+     * @returns {boolean}
+     */
+    function fileExistsSync(filePath) {
+        return fs.existsSync(filePath);
+    }
+
     exports.createDirectoryAsync = createDirectoryAsync;
     exports.createDirectorySync = createDirectorySync;
+    exports.fileExistsAsync = fileExistsAsync;
+    exports.fileExistsSync = fileExistsSync;
     exports.copyFileAsync = copyFileAsync;
     exports.copyFileSync = copyFileAsync;
     exports.writeAsync = writeAsync;

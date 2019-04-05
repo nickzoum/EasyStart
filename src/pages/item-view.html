@@ -11,11 +11,16 @@
         <form id="form">
             <ul>
                 <li class="input">
-                    <input id="file" type="file" />
+                    <input id="file-selector" type="file" class="hidden-input" />
+                    <input id="file" type="text" />
+                    <button id="select-file" class="select" />
                 </li>
                 <li class="input">
-                    <input id="image" type="file" accept="image/*" />
-                    <img src="../../assets/images/no-image.png" class="image-preview"/>
+                    <input id="image-selector" type="file" class="hidden-input" accept="image/*" />
+                    <input id="file" type="text" />
+                    <button id="image-select" class="select">
+                        <img src="../../assets/images/no-image.png" class="image-preview" />
+                    </button>
                 </li>
             </ul>
         </form>
