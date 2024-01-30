@@ -12,8 +12,10 @@
   "keywords": [],
   "author": "NZapp",
   "license": "ISC",
+  "dependencies": {
+    "electron": ">=22.3.25"
+  },
   "devDependencies": {
-    "electron": "^1.7.8",
     "electron-packager": "^9.1.0",
     "electron-winstaller": "^2.6.3"
   }
