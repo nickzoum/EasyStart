@@ -1,34 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
-<head>
+  <head>
     <link href="../styles/loading.css" rel="stylesheet" type="text/css" />
     <link href="../styles/item.css" rel="stylesheet" type="text/css" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="wrapper">
-        <form id="form">
-            <ul>
-                <li class="input">
-                    <input id="file-selector" type="file" class="hidden-input" />
-                    <input id="file" type="text" />
-                    <button id="select-file" class="select" />
-                </li>
-                <li class="input">
-                    <input id="image-selector" type="file" class="hidden-input" accept="image/*" />
-                    <input id="file" type="text" />
-                    <button id="image-select" class="select">
-                        <img src="../../assets/images/no-image.png" class="image-preview" />
-                    </button>
-                </li>
-            </ul>
-        </form>
-        <div id="loading" class="active"></div>
+      <form id="form">
+        <ul>
+          <li class="input">
+            <input id="file-selector" type="file" class="hidden-input" />
+            <input id="file" type="text" />
+            <button id="select-file" class="select" />
+          </li>
+          <li class="input">
+            <input
+              id="image-selector"
+              type="file"
+              class="hidden-input"
+              accept="image/*"
+            />
+            <input id="file" type="text" />
+            <button id="image-select" class="select">
+              <img
+                src="../../assets/images/no-image.png"
+                class="image-preview"
+              />
+            </button>
+          </li>
+        </ul>
+      </form>
+      <div id="loading" class="active"></div>
     </div>
-    <script>
-        require("../scripts/renderer/item.js");
-    </script>
-</body>
-
+    <script src="../scripts/renderer/item.js" defer></script>
+  </body>
 </html>
