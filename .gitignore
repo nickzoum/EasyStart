@@ -1,4 +1,4 @@
 
 release-builds/
 npm-debug.log
-node_modules/electron-winstaller/vendor/SquirrelSetup.log
+node_modules/
