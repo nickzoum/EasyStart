@@ -18,5 +18,8 @@
   "devDependencies": {
     "electron-packager": "^17.1.2",
     "electron-winstaller": "^5.4.1"
+  },
+  "overrides": {
+    "undici": "~7.28.0"
   }
 }
